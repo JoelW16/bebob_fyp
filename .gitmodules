@@ -1,0 +1,3 @@
+[submodule "src/bebop_autonomy"]
+	path = src/bebop_autonomy
+	url = ../../AutonomyLab/bebop_autonomy.git
