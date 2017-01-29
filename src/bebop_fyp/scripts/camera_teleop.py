@@ -50,8 +50,8 @@ class cameraTelop():
 
         self._hz = 30
 
-        self._tilt_rate = 1
-        self._pan_rate = 1
+        self._tilt_rate = 0.5
+        self._pan_rate = 0.5
 
         self._last_pressed = {}
         self._pan = 0
@@ -100,8 +100,22 @@ class cameraTelop():
         tilt = tilt * self._tilt_rate
         pan = pan * self._pan_rate
 
-        self._tilt += tilt
-        self._pan += pan
+        tiltLim = self._tilt + tilt
+        panLim = self._pan + pan
+
+        if tiltLim > 18:
+            self._tilt = 18
+        elif tiltLim < -40:
+            self._tilt = -40
+        else:
+            self._tilt =tiltLim
+
+        if panLim > 35:
+            self._pan = 35
+        elif panLim < -35:
+            self._pan = -35
+        else:
+            self._pan = panLim
 
     def _key_pressed(self, keycode):
         if keycode == ord('q'):
@@ -116,7 +130,7 @@ class cameraTelop():
     def _publish(self):
         self._interface.clear()
         self._interface.write_line(2, 'Pan: %f, Tilt: %f' % (self._pan, self._tilt))
-        self._interface.write_line(5, 'Use arrow keys to move, r to reset camera, q to exit.')
+        self._interface.write_line(5, 'Use w a s d keys to move, r to reset camera, q to exit.')
         self._interface.refresh()
 
         twist = self._get_twist(self._pan, self._tilt)
