@@ -23,8 +23,8 @@ class image_converter:
 
         self.image_pub = rospy.Publisher("openCV_image", Image, queue_size=10)
 
-        self.lower_blue = np.array([82, 216, 157])
-        self.upper_blue = np.array([113, 255, 255])
+        self.lower_blue = np.array([104, 172, 68])
+        self.upper_blue = np.array([119, 255, 255])
         pts = deque(maxlen=args["buffer"])
 
         self.bridge = CvBridge()
@@ -56,6 +56,7 @@ class image_converter:
 
         #cv2.line(cv_image, (width/2, 0), (width/2, height), (255, 255, 255), 1)
         #cv2.line(cv_image, (0, height/2), (width, height/2), (255, 255, 255), 1)
+
 
         cv2.rectangle(cv_image, left_center_boundary[0], left_center_boundary[1],  (255, 0, 0), 1)
         cv2.rectangle(cv_image, right_center_boundary[0], right_center_boundary[1], (255, 0, 0), 1)
