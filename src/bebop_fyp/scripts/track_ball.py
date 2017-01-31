@@ -89,33 +89,33 @@ class image_converter:
 
             if all(i > j for i, j in zip(center,center_center_boundary[0])) and all(i < j for i, j in zip(center,center_center_boundary[1])):
                 cv2.putText(cv_image, 'Center', (10, 30), font, 2, (0, 255, 0), 2, cv2.LINE_AA)
-                self.pub(1)
+                self.pub.publish(1)
             elif all(i > j for i, j in zip(center,top_center_boundary[0])) and all(i < j for i, j in zip(center,top_center_boundary[1])):
                 cv2.putText(cv_image, 'Top Center', (10, 30), font, 2, (255, 0, 0), 2, cv2.LINE_AA)
-                self.pub(2)
+                self.pub.publish(2)
             elif all(i > j for i, j in zip(center, bottom_center_boundary[0])) and all(i < j for i, j in zip(center, bottom_center_boundary[1])):
                 cv2.putText(cv_image, 'Bottom Center', (10, 30), font, 2, (255, 0, 0), 2, cv2.LINE_AA)
-                self.pub(3)
+                self.pub.publish(3)
             elif all(i > j for i, j in zip(center, left_center_boundary[0])) and all(i < j for i, j in zip(center, left_center_boundary[1])):
                 cv2.putText(cv_image, 'Left Center', (10, 30), font, 2, (255, 0, 0), 2, cv2.LINE_AA)
-                self.pub(4)
+                self.pub.publish(4)
             elif all(i > j for i, j in zip(center, right_center_boundary[0])) and all(i < j for i, j in zip(center, right_center_boundary[1])):
                 cv2.putText(cv_image, 'Right Center', (10, 30), font, 2, (255, 0, 0), 2, cv2.LINE_AA)
-                self.pub(5)
+                self.pub.publish(5)
             elif all(i > j for i, j in zip(center, (width/2, 0))):
                 if all(i > j for i, j in zip(center, (0, height/2))):
                     cv2.putText(cv_image, 'Right Bottom', (10, 30), font, 2, (255, 255, 255), 2, cv2.LINE_AA)
-                    self.pub(6)
+                    self.pub.publish(6)
                 else:
                     cv2.putText(cv_image, 'Right Top', (10, 30), font, 2, (255, 255, 255), 2, cv2.LINE_AA)
-                    self.pub(7)
+                    self.pub.publish(7)
             else:
                 if all(i > j for i, j in zip(center, (0, height/2))) :
                     cv2.putText(cv_image, 'Left Bottom', (10, 30), font, 2, (255, 255, 255), 2, cv2.LINE_AA)
-                    self.pub(8)
+                    self.pub.publish(8)
                 else:
                     cv2.putText(cv_image, 'Left Top', (10, 30), font, 2, (255, 255, 255), 2, cv2.LINE_AA)
-                    self.pub(9)
+                    self.pub.publish(9)
 
             if(radius > 10):
                 cv2.circle(cv_image, (int(x), int(y)), int(radius), (0,255,255), 2)
@@ -139,8 +139,8 @@ class image_converter:
             print(e)
 
 def main(args):
-    ic = image_converter()
     rospy.init_node('ball_teleop')
+    ic = image_converter()
     try:
         rospy.spin()
     except KeyboardInterrupt:
