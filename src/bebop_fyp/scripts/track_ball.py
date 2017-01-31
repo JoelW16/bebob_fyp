@@ -122,6 +122,7 @@ class image_converter:
                 cv2.circle(cv_image, center, 5, (0, 0, 255), -1)
         else:
             cv2.putText(cv_image, 'No Ball', (10, 30), font, 2, (0, 0, 255), 2, cv2.LINE_AA)
+            self.pub.publish(0)
 
         #res = cv2.bitwise_and(cv_image, cv_image, mask=mask)
 
