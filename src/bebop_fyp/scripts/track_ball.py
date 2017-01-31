@@ -3,7 +3,7 @@ from collections import deque
 import sys
 import rospy
 import cv2
-from std_msgs.msg import String
+from std_msgs.msg import String, Int8
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge, CvBridgeError
 import numpy as np
@@ -22,6 +22,7 @@ class image_converter:
         args = vars(self.ap.parse_args())
 
         self.image_pub = rospy.Publisher("openCV_image", Image, queue_size=10)
+        self.pub = rospy.Publisher('ball_teleop', Int8, queue_size=10)
 
         self.lower_blue = np.array([104, 172, 68])
         self.upper_blue = np.array([119, 255, 255])
@@ -88,24 +89,33 @@ class image_converter:
 
             if all(i > j for i, j in zip(center,center_center_boundary[0])) and all(i < j for i, j in zip(center,center_center_boundary[1])):
                 cv2.putText(cv_image, 'Center', (10, 30), font, 2, (0, 255, 0), 2, cv2.LINE_AA)
+                self.pub(1)
             elif all(i > j for i, j in zip(center,top_center_boundary[0])) and all(i < j for i, j in zip(center,top_center_boundary[1])):
                 cv2.putText(cv_image, 'Top Center', (10, 30), font, 2, (255, 0, 0), 2, cv2.LINE_AA)
+                self.pub(2)
             elif all(i > j for i, j in zip(center, bottom_center_boundary[0])) and all(i < j for i, j in zip(center, bottom_center_boundary[1])):
                 cv2.putText(cv_image, 'Bottom Center', (10, 30), font, 2, (255, 0, 0), 2, cv2.LINE_AA)
+                self.pub(3)
             elif all(i > j for i, j in zip(center, left_center_boundary[0])) and all(i < j for i, j in zip(center, left_center_boundary[1])):
                 cv2.putText(cv_image, 'Left Center', (10, 30), font, 2, (255, 0, 0), 2, cv2.LINE_AA)
+                self.pub(4)
             elif all(i > j for i, j in zip(center, right_center_boundary[0])) and all(i < j for i, j in zip(center, right_center_boundary[1])):
                 cv2.putText(cv_image, 'Right Center', (10, 30), font, 2, (255, 0, 0), 2, cv2.LINE_AA)
+                self.pub(5)
             elif all(i > j for i, j in zip(center, (width/2, 0))):
                 if all(i > j for i, j in zip(center, (0, height/2))):
                     cv2.putText(cv_image, 'Right Bottom', (10, 30), font, 2, (255, 255, 255), 2, cv2.LINE_AA)
+                    self.pub(6)
                 else:
                     cv2.putText(cv_image, 'Right Top', (10, 30), font, 2, (255, 255, 255), 2, cv2.LINE_AA)
+                    self.pub(7)
             else:
                 if all(i > j for i, j in zip(center, (0, height/2))) :
                     cv2.putText(cv_image, 'Left Bottom', (10, 30), font, 2, (255, 255, 255), 2, cv2.LINE_AA)
+                    self.pub(8)
                 else:
                     cv2.putText(cv_image, 'Left Top', (10, 30), font, 2, (255, 255, 255), 2, cv2.LINE_AA)
+                    self.pub(9)
 
             if(radius > 10):
                 cv2.circle(cv_image, (int(x), int(y)), int(radius), (0,255,255), 2)
@@ -130,7 +140,7 @@ class image_converter:
 
 def main(args):
     ic = image_converter()
-    rospy.init_node('image_converter')
+    rospy.init_node('ball_teleop')
     try:
         rospy.spin()
     except KeyboardInterrupt:
