@@ -9,12 +9,12 @@ class BallTeleop():
 
     def __init__(self):
         rospy.init_node('camera_listener', anonymous=True)
-        self._pub_cmd = rospy.Publisher('bebop/camera_control', Twist)
+        self._pub_cmd = rospy.Publisher('bebop/camera_control', Twist, queue_size=1)
 
         self._hz = 30
 
-        self._tilt_rate = 0.5
-        self._pan_rate = 0.5
+        self._tilt_rate = 0.4
+        self._pan_rate = 0.4
 
         self._last_instruction = {}
         self._pan = 0
