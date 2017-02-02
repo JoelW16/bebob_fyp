@@ -48,6 +48,7 @@ class BallTeleop():
 
     movement_bindings = {
         0: (0, 0, 0, 0),  # Hover
+        0: (0, 0, 0, 0),  # Hover
         1: (0, 0, 0, 0), #Hover
         2: (0, 0, 0, 0),  # Hover
         3: (0, 0, 0, 0),  # Hover
@@ -70,7 +71,6 @@ class BallTeleop():
         self._ball_zone(data.data)
         self._set_velocity()
         self._publish()
-        rate.sleep()
 
     def _get_twist(self, pitch, roll, yaw, vertical):
         twist = Twist()
@@ -98,10 +98,10 @@ class BallTeleop():
             yaw += y
             vertical += v
 
-        pitch *= self._last_instruction
-        roll *= self._last_instruction
-        yaw *= self._last_instruction
-        vertical *= self._last_instruction
+        pitch *= self._pitch_rate
+        roll *= self._roll_rate
+        yaw *= self._yaw_rate
+        vertical *= self._vertical_rate
 
         self._pitch = pitch
         self._roll = roll
@@ -113,6 +113,7 @@ class BallTeleop():
             self._last_instruction[zone] = rospy.get_time()
 
     def _publish(self):
+        rospy.loginfo(self._yaw)
         twist = self._get_twist(self._pitch, self._roll, self._yaw, self._vertical)
         self._pub_cmd.publish(twist)
 

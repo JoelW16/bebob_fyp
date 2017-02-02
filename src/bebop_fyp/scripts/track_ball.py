@@ -84,8 +84,8 @@ class image_converter:
             M = cv2.moments(c)
             center = (int(M["m10"] / M["m00"]),int( M["m01"] / M["m00"]))
 
-            cv2.putText(cv_image, center.__str__(), (10, 65), font, 2, (0, 255, 0), 2, cv2.LINE_AA)
-            cv2.putText(cv_image, radius.__str__(), (10, 95), font, 2, (0, 255, 0), 2, cv2.LINE_AA)
+            #cv2.putText(cv_image, center.__str__(), (10, 65), font, 2, (0, 255, 0), 2, cv2.LINE_AA)
+            #cv2.putText(cv_image, radius.__str__(), (10, 95), font, 2, (0, 255, 0), 2, cv2.LINE_AA)
 
             if all(i > j for i, j in zip(center,center_center_boundary[0])) and all(i < j for i, j in zip(center,center_center_boundary[1])):
                 cv2.putText(cv_image, 'Center', (10, 30), font, 2, (0, 255, 0), 2, cv2.LINE_AA)
@@ -130,7 +130,7 @@ class image_converter:
         cv2.namedWindow('frame', cv2.WINDOW_NORMAL)
         cv2.resizeWindow('frame', 1600, 1200)
         cv2.imshow('frame', cv_image)
-        cv2.imshow('mask', mask)
+        #cv2.imshow('mask', mask)
         #cv2.imshow('Res', res)
         cv2.waitKey(3)
 

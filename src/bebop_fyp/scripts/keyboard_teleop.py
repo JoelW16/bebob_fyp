@@ -64,10 +64,10 @@ class keyTelop():
         self._land = False
 
         #Set rate for each axis retrives values from drone
-        self._pitch_rate = rospy.get_param('~PilotingSettingsMaxTiltCurrent', 0.1)
-        self._roll_rate = rospy.get_param('~PilotingSettingsMaxTiltCurrent', 0.1)
-        self._yaw_rate = rospy.get_param('~SpeedSettingsMaxRotationSpeedCurrent', 0.1)
-        self._vertical_rate = rospy.get_param('~SpeedSettingsMaxVerticalSpeedCurrent', 0.1)
+        self._pitch_rate = rospy.get_param('~PilotingSettingsMaxTiltCurrent', 0.2)
+        self._roll_rate = rospy.get_param('~PilotingSettingsMaxTiltCurrent', 0.2)
+        self._yaw_rate = rospy.get_param('~SpeedSettingsMaxRotationSpeedCurrent', 0.2)
+        self._vertical_rate = rospy.get_param('~SpeedSettingsMaxVerticalSpeedCurrent', 0.2)
 
         #Set default values for axis
         self._pitch = 0
