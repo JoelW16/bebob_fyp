@@ -23,15 +23,21 @@ class image_converter:
 
         self.image_pub = rospy.Publisher("openCV_image", Image, queue_size=10)
         self.pub = rospy.Publisher('ball_teleop', Int8, queue_size=10)
+        self.battery = 0
 
         self.lower_blue = np.array([104, 172, 68])
         self.upper_blue = np.array([119, 255, 255])
         pts = deque(maxlen=args["buffer"])
 
         self.bridge = CvBridge()
-        self.image_sub = rospy.Subscriber("/bebop/image_raw", Image, self.callback)
+        self.image_sub = rospy.Subscriber("/bebop/image_raw", Image, self.callback0)
+        self.image_sub = rospy.Subscriber("/bebop/states/common/CommonState/BatteryStateChanged", Image, self.callback1)
 
-    def callback(self, data):
+    def callback1(self, data):
+         self.battery = data.percent
+
+
+    def callback0(self, data):
         try:
             cv_image = self.bridge.imgmsg_to_cv2(data, "bgr8")
         except CvBridgeError as e:
@@ -86,6 +92,7 @@ class image_converter:
 
             #cv2.putText(cv_image, center.__str__(), (10, 65), font, 2, (0, 255, 0), 2, cv2.LINE_AA)
             #cv2.putText(cv_image, radius.__str__(), (10, 95), font, 2, (0, 255, 0), 2, cv2.LINE_AA)
+            cv2.putText(cv_image, self.battery, (10, 95), font, 2, (0, 255, 0), 2, cv2.LINE_AA)
 
             if all(i > j for i, j in zip(center,center_center_boundary[0])) and all(i < j for i, j in zip(center,center_center_boundary[1])):
                 cv2.putText(cv_image, 'Center', (10, 30), font, 2, (0, 255, 0), 2, cv2.LINE_AA)
