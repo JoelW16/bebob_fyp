@@ -8,6 +8,7 @@ from sensor_msgs.msg import Image
 from cv_bridge import CvBridge, CvBridgeError
 import numpy as np
 import argparse
+import requests
 
 class image_converter:
         #cv2.line(cv_image, (0, height/3), (width, height/3), (0, 255, 0), 1)
@@ -34,7 +35,8 @@ class image_converter:
         self.image_sub = rospy.Subscriber("/bebop/states/common/CommonState/BatteryStateChanged", Image, self.callback1)
 
     def callback1(self, data):
-         self.battery = data.percent
+        self.battery = data.percent
+        requests.put('http://52.56.154.153:3000/api/droneUpdateStatus/58ab72d5ff63d537a10e8a2c', data={'battery': self.battery})
 
 
     def callback0(self, data):
