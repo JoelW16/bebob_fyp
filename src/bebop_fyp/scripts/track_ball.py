@@ -7,8 +7,11 @@ from std_msgs.msg import String, Int8
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge, CvBridgeError
 import numpy as np
+import roslib; roslib.load_manifest('bebop_msgs')
 import argparse
 import requests
+from bebop_msgs.msg import CommonCommonStateBatteryStateChanged as b
+
 
 class image_converter:
         #cv2.line(cv_image, (0, height/3), (width, height/3), (0, 255, 0), 1)
@@ -32,11 +35,16 @@ class image_converter:
 
         self.bridge = CvBridge()
         self.image_sub = rospy.Subscriber("/bebop/image_raw", Image, self.callback0)
-        self.image_sub = rospy.Subscriber("/bebop/states/common/CommonState/BatteryStateChanged", Image, self.callback1)
+        self.batt_sub = rospy.Subscriber("/bebop/states/common/CommonState/BatteryStateChanged", b, self.callback1)
 
     def callback1(self, data):
+
         self.battery = data.percent
         requests.put('http://52.56.154.153:3000/api/droneUpdateStatus/58ab72d5ff63d537a10e8a2c', data={'battery': self.battery})
+
+        print (data.percent)
+        self.battery = data.percent
+
 
 
     def callback0(self, data):
@@ -92,9 +100,9 @@ class image_converter:
             M = cv2.moments(c)
             center = (int(M["m10"] / M["m00"]),int( M["m01"] / M["m00"]))
 
+            cv2.putText(cv_image, "Battery" + str(self.battery) + "%", (10, 65), font, 2, (0, 0, 255), 2, cv2.LINE_AA)
             #cv2.putText(cv_image, center.__str__(), (10, 65), font, 2, (0, 255, 0), 2, cv2.LINE_AA)
-            #cv2.putText(cv_image, radius.__str__(), (10, 95), font, 2, (0, 255, 0), 2, cv2.LINE_AA)
-            cv2.putText(cv_image, self.battery, (10, 95), font, 2, (0, 255, 0), 2, cv2.LINE_AA)
+            cv2.putText(cv_image, radius.__str__(), (10, 95), font, 2, (0, 255, 0), 2, cv2.LINE_AA)
 
             if all(i > j for i, j in zip(center,center_center_boundary[0])) and all(i < j for i, j in zip(center,center_center_boundary[1])):
                 cv2.putText(cv_image, 'Center', (10, 30), font, 2, (0, 255, 0), 2, cv2.LINE_AA)
@@ -129,7 +137,15 @@ class image_converter:
             if(radius > 10):
                 cv2.circle(cv_image, (int(x), int(y)), int(radius), (0,255,255), 2)
                 cv2.circle(cv_image, center, 5, (0, 0, 255), -1)
+
+            if (radius <10):
+                pass
+            elif (radius < 20):
+                self.pub.publish(10)
+            elif(radius > 35):
+                self.pub.publish(11)
         else:
+            cv2.putText(cv_image, "Battery" + str(self.battery)+"%", (10, 65), font, 2, (0, 0, 255), 2, cv2.LINE_AA)
             cv2.putText(cv_image, 'No Ball', (10, 30), font, 2, (0, 0, 255), 2, cv2.LINE_AA)
             self.pub.publish(0)
 

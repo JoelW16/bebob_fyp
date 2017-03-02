@@ -1,3 +1,6 @@
 [submodule "src/bebop_autonomy"]
 	path = src/bebop_autonomy
 	url = ../../AutonomyLab/bebop_autonomy.git
+[submodule "src/myo"]
+	path = src/myo
+	url = https://github.com/uts-magic-lab/ros_myo.git

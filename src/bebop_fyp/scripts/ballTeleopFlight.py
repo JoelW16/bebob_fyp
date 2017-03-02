@@ -44,26 +44,28 @@ class BallTeleop():
             7: 'Right Top',
             8: 'Left Bottom',
             9: 'Left Top',
+            10: 'Ball radius < 20px',
+            11: 'Ball radius > 35px'
         }[data]
 
     movement_bindings = {
         0: (0, 0, 0, 0),  # Hover
         0: (0, 0, 0, 0),  # Hover
         1: (0, 0, 0, 0), #Hover
-        2: (0, 0, 0, 0),  # Hover
-        3: (0, 0, 0, 0),  # Hover
+        #2: (0, 0, 0, 0),  # Hover
+        #3: (0, 0, 0, 0),  # Hover
         6: (0, 0, 0, 0),  # Hover
         7: (0, 0, 0, 0),  # Hover
         8: (0, 0, 0, 0),  # Hover
         9: (0, 0, 0, 0),  # Hover
-        #: ( 1,  0,  0,  0), #Forward
-        #: (-1,  0,  0,  0), #Backward
-        #: ( 0,  1,  0,  0), #Left
-        #: ( 0, -1,  0,  0), #Right
-        4: (0, 0, 1, 0), #Rotate Counter Clockwise
-        5: (0, 0, -1, 0), #Rotate Clockwise
-        #2: ( 0,  0,  0,  1), #Ascend
-        #3: ( 0,  0,  0, -1), #Descend
+        10: ( 1,  0,  0,  0), #Forward
+        11: (-1,  0,  0,  0), #Backward
+        4: ( 0,  1,  0,  0), #Left
+        5: ( 0, -1,  0,  0), #Right
+        #4: (0, 0, 1, 0), #Rotate Counter Clockwise
+        #5: (0, 0, -1, 0), #Rotate Clockwise
+        2: ( 0,  0,  0,  1), #Ascend
+        3: ( 0,  0,  0, -1), #Descend
     }
 
     def callback(self, data):
@@ -113,7 +115,7 @@ class BallTeleop():
             self._last_instruction[zone] = rospy.get_time()
 
     def _publish(self):
-        rospy.loginfo(self._yaw)
+        #rospy.loginfo(self._yaw)
         twist = self._get_twist(self._pitch, self._roll, self._yaw, self._vertical)
         self._pub_cmd.publish(twist)
 
