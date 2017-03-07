@@ -40,7 +40,7 @@ def main(args):
 def exit():
     print("Myo disconnect")
     requests.put('http://52.56.154.153:3000/api/myoUpdateStatus/58b829c6280587252ed0bec8',
-                 data={'connected': "false"})
+                 data={'connected': "false", 'pose': 0})
 
 if __name__ == '__main__':
     main(sys.argv)
