@@ -40,7 +40,7 @@ class server:
 def exit():
     print("Drone disconnect")
     requests.put('http://52.56.154.153:3000/api/droneUpdateStatus/58b82b7d2cc965257c433dea',
-                 data={'battery' : 0, 'connected': "false"})
+                 data={'battery' : 0, 'connected': "false", 'longitude': 500, 'latitude': 500, 'Altitude': 0})
 
 def main(args):
     atexit.register(exit)
