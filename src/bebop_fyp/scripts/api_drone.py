@@ -3,25 +3,32 @@ import rospy
 import sys
 import requests
 import atexit
+import socket_drone
 from bebop_msgs.msg import CommonCommonStateBatteryStateChanged as b
 from bebop_msgs.msg import Ardrone3PilotingStatePositionChanged as gps
 
 class server:
-    def __init__(self):
-        self.battery = 0
 
-        self.longitude = 500;
-        self.latitude = 500;
-        self.altitude = 0;
+    def on_test(self, *args):
+        print ("connected")
+
+    def __init__(self):
+
+        self.battery = 0
+        self.longitude = 500
+        self.latitude = 500
+        self.altitude = 0
         self.batt_sub = rospy.Subscriber("/bebop/states/common/CommonState/BatteryStateChanged", b, self.callback)
         self.gps_sub = rospy.Subscriber("/bebop/states/ardrone3/PilotingState/PositionChanged", gps, self.sendGPS)
         self.start()
+
 
     def callback(self, data):
         print (data.percent)
         self.battery = data.percent
         requests.put('http://52.56.154.153:3000/api/droneUpdateStatus/58b82b7d2cc965257c433dea',
                      data={'battery': self.battery})
+
 
     def sendGPS(self, data):
 
@@ -36,6 +43,8 @@ class server:
         print("Drone connect")
         requests.put('http://52.56.154.153:3000/api/droneUpdateStatus/58b82b7d2cc965257c433dea',
                      data={'battery' : self.battery, 'connected': "true"})
+        socket_drone.socket()
+
 
 def exit():
     print("Drone disconnect")
