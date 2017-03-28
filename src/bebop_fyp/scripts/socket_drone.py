@@ -2,6 +2,7 @@
 import rospy
 import sys
 import json
+from guide_flight import guide
 from socketIO_client import SocketIO, BaseNamespace
 from std_msgs.msg import Empty
 
@@ -39,6 +40,8 @@ class socket:
         print("lat: " + str(latitude))
         print("long: " + str(longitude))
 
+        node = guide(latitude, longitude)
+
 
     def on_takeoff(self, args):
         print("takeoff")
@@ -51,6 +54,9 @@ class socket:
     def on_emgLanding(self, args):
         print("EMG LANDING")
         self.pub_emgland.publish(Empty())
+
+
+
 
 
 
