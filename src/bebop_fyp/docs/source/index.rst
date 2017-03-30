@@ -2,10 +2,10 @@ Bebop_fyp ROS Package Documentation
 =====================================
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
    
-   readme_link
-   package
+   package_scripts
+   package_launch
 
 
 

@@ -43,6 +43,7 @@ class TextWindow():
 
 
 class cameraTelop():
+    """Camera Stuff"""
 
     def __init__(self, interface):
         self._interface = interface
