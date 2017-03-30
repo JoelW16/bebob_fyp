@@ -3,7 +3,8 @@ Bebop_fyp ROS Package Documentation
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   
+   package
 
 
 
