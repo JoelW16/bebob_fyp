@@ -1,4 +1,4 @@
-Bebop_fyp Package Documentation
+Bebop fyp Package Documentation
 ===============================
 .. automodule::firstflight
    :members:
