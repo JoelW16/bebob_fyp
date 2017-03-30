@@ -1,5 +1,6 @@
 Bebop_fyp ROS Package Documentation
 =====================================
+.. include:: ../../scripts
 
 .. toctree::
    :maxdepth: 2
