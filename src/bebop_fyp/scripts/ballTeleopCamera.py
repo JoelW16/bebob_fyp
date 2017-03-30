@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 import rospy
-import rospy
 from std_msgs.msg import String, Int8
 from geometry_msgs.msg import Twist
 

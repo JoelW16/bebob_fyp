@@ -1,23 +1,15 @@
 #!/usr/bin/env python
-
 import rospy
-from geometry_msgs.msg import Twist 
+import sys
 from std_msgs.msg import Empty
-		
 
 def firstflight():
+	"""Simple program publishes takeoff message, sleeps then publishes landing message.
+	"""
+
+
 	pub_takeoff = rospy.Publisher('/bebop/takeoff', Empty, queue_size=10)
 	pub_land = rospy.Publisher('/bebop/land', Empty, queue_size = 10)
-	pubCommand = rospy.Publisher('/cmd_vel',Twist, queue_size = 10)
-
-	
-	command = Twist()
-	command.linear.x  = 0 	#pitch
-	command.linear.y  = 0	#roll
-	command.linear.z  = 0	#z_vel
-	command.angular.z = 0	#yaw
-
-	
 
 	rospy.init_node('firstflight', anonymous=True)
 	rate = rospy.Rate(0.2)	
@@ -29,14 +21,18 @@ def firstflight():
 
 	rate.sleep()
 
-
 	pub_land.publish(Empty())
 	print "landing"
 
+	rospy.spin()
 
+def main(args):
+	try:
+		rospy.init_node('bebop_guide')
+		firstflight()
+	except KeyboardInterrupt:
+		rospy.signal_shutdown('Bye')
 
 if __name__ == '__main__':
-	try:
-		firstflight()
-	except rospy.ROSInterruptException:
-		pass
+	main(sys.argv)
+
