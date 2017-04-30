@@ -2,26 +2,23 @@
 import rospy
 import sys
 import os
-import time
 from ftplib import FTP
+import time
 from std_msgs.msg import Empty, String
 
 
-class guide:
-    def __init__(self, latitude, longitiude):
+class mavlink:
+    def __init__(self):
         self.dir = os.path.dirname(__file__)
         self.fileName = os.path.join(self.dir,"guideFlight"+".mavlink")
-        self.latitiude = float("{0:.6f}".format(latitude))
-        self.longitiude = float("{0:.6f}".format(longitiude))
+        self.latitiude = 50.870854
+        self.longitiude = -0.093484
         self.pub_startFlightPlan = rospy.Publisher('/bebop/autoflight/start', String, queue_size=10)
         self.pub_stopFlightPlan = rospy.Publisher('/bebop/autoflight/stop', Empty, queue_size=10)
         self.createFlightPlan()
         self.uploadFlightPlan()
-        time.sleep(1)
+        time.sleep(2)
         self.startFlightPlan()
-
-
-
 
     def createFlightPlan(self):
         mavlink = open(self.fileName, "w")
@@ -49,19 +46,17 @@ class guide:
 
     def startFlightPlan(self):
         self.pub_startFlightPlan.publish("guideFlight.mavlink")
-
+        print "start"
 
     def stopFlightPlan(self):
         pass
         #self.pub_stopFlightPlan.publish(Empty())
 
 
-
-
-
 def main(args):
+    rospy.init_node('bebop_guide')
+    mav = mavlink()
     try:
-        rospy.init_node('bebop_guide')
         rospy.spin()
     except KeyboardInterrupt:
         rospy.signal_shutdown('Bye')

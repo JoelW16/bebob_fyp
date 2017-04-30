@@ -165,7 +165,7 @@ class image_converter:
             print(e)
 
 def main(args):
-    rospy.init_node('ball_teleop')
+    rospy.init_node('ball_track')
     ic = image_converter()
     try:
         rospy.spin()

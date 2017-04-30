@@ -8,15 +8,11 @@ from std_msgs.msg import Empty
 
 class socket:
 
-
-
     def __init__(self):
         self.pub_takeoff = rospy.Publisher('/bebop/takeoff', Empty, queue_size=10)
         self.pub_land = rospy.Publisher('/bebop/land', Empty, queue_size=10)
         self.pub_emgland = rospy.Publisher('/bebop/reset', Empty, queue_size=10)
         self.startSocket()
-
-
 
     def startSocket(self):
         self.sio = SocketIO('fyp.joelwalker.co.uk', 3000, BaseNamespace)

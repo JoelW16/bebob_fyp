@@ -7,13 +7,13 @@ from geometry_msgs.msg import Twist
 class BallTeleop():
 
     def __init__(self):
-        rospy.init_node('camera_listener', anonymous=True)
+        rospy.init_node('ball_teleop', anonymous=True)
         self._pub_cmd = rospy.Publisher('bebop/camera_control', Twist, queue_size=1)
 
-        self._hz = 30
+        self._hz = 100
 
-        self._tilt_rate = 0.4
-        self._pan_rate = 0.4
+        self._tilt_rate = 0.2
+        self._pan_rate = 0.2
 
         self._last_instruction = {}
         self._pan = 0
@@ -51,7 +51,7 @@ class BallTeleop():
     def callback(self, data):
         rate = rospy.Rate(self._hz)
         if data.data != 0:
-            self._ball_zone(data.data)
+           self._ball_zone(data.data)
         self._set_velocity()
         self._publish()
         rate.sleep()
